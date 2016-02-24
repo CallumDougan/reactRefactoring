@@ -6,6 +6,12 @@ Bank.prototype = {
   addAccount: function(account){
     this.accounts.push(account);
   },
+
+  deleteAccount: function(account){
+    var accountIndex = this.accounts.indexOf(account);
+    this.accounts.splice(accountIndex, 1);
+  },
+
   findAccountByOwnerName:function(ownerName){
     var foundAccount = null;
     for (var account of this.accounts) {

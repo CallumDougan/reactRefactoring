@@ -13,6 +13,15 @@ describe('bank', function(){
     bank.addAccount(account);
     assert.deepEqual(account, bank.accounts[0]);
   });
+  it('should be able to delete account', function(){
+    var bank = new Bank();
+    var account = new Account({owner:'Jay',amount:50, type:'business'});
+    var account2 = new Account({owner:'Val',amount:150, type:'business'});
+    bank.addAccount(account);
+    bank.addAccount(account2);
+    bank.deleteAccount(account);
+    assert.deepEqual(bank.accounts, [account2])
+  })
   it('find account by owner name', function(){
     var bank = new Bank();
     var account = new Account({owner:'Jay',amount:50, type:'business'});

@@ -103,6 +103,12 @@
 	  addAccount: function addAccount(account) {
 	    this.accounts.push(account);
 	  },
+	
+	  deleteAccount: function deleteAccount(account) {
+	    var accountIndex = this.accounts.indexOf(account);
+	    this.accounts.splice(accountIndex, 1);
+	  },
+	
 	  findAccountByOwnerName: function findAccountByOwnerName(ownerName) {
 	    var foundAccount = null;
 	    var _iteratorNormalCompletion = true;
@@ -19930,6 +19936,12 @@
 	  addAccount: function addAccount(account) {
 	    this.accounts.push(account);
 	  },
+	
+	  deleteAccount: function deleteAccount(account) {
+	    var accountIndex = this.accounts.indexOf(account);
+	    this.accounts.splice(accountIndex, 1);
+	  },
+	
 	  findAccountByOwnerName: function findAccountByOwnerName(ownerName) {
 	    var foundAccount = null;
 	    var _iteratorNormalCompletion = true;
