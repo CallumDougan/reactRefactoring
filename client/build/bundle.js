@@ -55,45 +55,17 @@
 	
 	var BankBox = __webpack_require__(162);
 	
-	// var createItemForAccount = function(account){
-	//   var accountListItem = document.createElement('li');
-	//   accountListItem.innerText = account.owner + ": £" + account.amount;
-	//   return accountListItem;
-	// }
-	
-	// var populateAccountList = function(listElement, accounts){
-	//   for(var account of accounts){
-	//     listElement.appendChild(createItemForAccount(account));
-	//   }
-	// }
-	
 	window.onload = function () {
 	  ReactDOM.render(React.createElement(BankBox, null), document.getElementById('app'));
-	  //   var bank = new Bank();
-	  //   for(var account of sampleAccounts){
-	  //     bank.addAccount(account);
-	  //   }
-	
-	  //   var totalDisplay = document.getElementById('total');
-	  //   var businessTotalDisplay = document.getElementById('business-total');
-	  //   var personalTotalDisplay = document.getElementById('personal-total');
-	
-	  //   totalDisplay.innerText = "Total: £" + bank.totalCash();
-	  //   businessTotalDisplay.innerText = "Total Business: £" + bank.totalCash('business');
-	  //   personalTotalDisplay.innerText = "Total Personal: £" + bank.totalCash('personal');
-	
-	  //   var businessAccountList = document.getElementById('business-accounts');
-	  //   var personalAccountList = document.getElementById('personal-accounts');
-	
-	  //   populateAccountList(businessAccountList, bank.filteredAccounts('business'))
-	  //   populateAccountList(personalAccountList, bank.filteredAccounts('personal'))
 	};
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	var React = __webpack_require__(4);
 	
 	var Bank = function Bank() {
 	  this.accounts = [];
@@ -102,11 +74,6 @@
 	Bank.prototype = {
 	  addAccount: function addAccount(account) {
 	    this.accounts.push(account);
-	  },
-	
-	  deleteAccount: function deleteAccount(account) {
-	    var accountIndex = this.accounts.indexOf(account);
-	    this.accounts.splice(accountIndex, 1);
 	  },
 	
 	  findAccountByOwnerName: function findAccountByOwnerName(ownerName) {
@@ -140,9 +107,9 @@
 	
 	    return foundAccount;
 	  },
-	  filteredAccounts: function filteredAccounts(type) {
-	    if (!type) return this.accounts;
-	    var filteredAccounts = [];
+	
+	  findAccountById: function findAccountById(id) {
+	    var foundAccount = null;
 	    var _iteratorNormalCompletion2 = true;
 	    var _didIteratorError2 = false;
 	    var _iteratorError2 = undefined;
@@ -151,7 +118,9 @@
 	      for (var _iterator2 = this.accounts[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	        var account = _step2.value;
 	
-	        if (type === account.type) filteredAccounts.push(account);
+	        if (account.id = id) {
+	          foundAccount = account;
+	        }
 	      }
 	    } catch (err) {
 	      _didIteratorError2 = true;
@@ -168,19 +137,21 @@
 	      }
 	    }
 	
-	    return filteredAccounts;
+	    return foundAccount;
 	  },
-	  totalCash: function totalCash(type) {
-	    var total = 0;
+	
+	  filteredAccounts: function filteredAccounts(type) {
+	    if (!type) return this.accounts;
+	    var filteredAccounts = [];
 	    var _iteratorNormalCompletion3 = true;
 	    var _didIteratorError3 = false;
 	    var _iteratorError3 = undefined;
 	
 	    try {
-	      for (var _iterator3 = this.filteredAccounts(type)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	      for (var _iterator3 = this.accounts[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 	        var account = _step3.value;
 	
-	        total += account.amount;
+	        if (type === account.type) filteredAccounts.push(account);
 	      }
 	    } catch (err) {
 	      _didIteratorError3 = true;
@@ -193,6 +164,35 @@
 	      } finally {
 	        if (_didIteratorError3) {
 	          throw _iteratorError3;
+	        }
+	      }
+	    }
+	
+	    return filteredAccounts;
+	  },
+	  totalCash: function totalCash(type) {
+	    var total = 0;
+	    var _iteratorNormalCompletion4 = true;
+	    var _didIteratorError4 = false;
+	    var _iteratorError4 = undefined;
+	
+	    try {
+	      for (var _iterator4 = this.filteredAccounts(type)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	        var account = _step4.value;
+	
+	        total += account.amount;
+	      }
+	    } catch (err) {
+	      _didIteratorError4 = true;
+	      _iteratorError4 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	          _iterator4.return();
+	        }
+	      } finally {
+	        if (_didIteratorError4) {
+	          throw _iteratorError4;
 	        }
 	      }
 	    }
@@ -19870,6 +19870,20 @@
 	    };
 	  },
 	
+	  deleteAccount: function deleteAccount(account) {
+	    console.log('attempting to delete:', account);
+	    var accountIndex = this.state.accounts.indexOf(account);
+	    this.state.accounts.splice(accountIndex, 1);
+	    this.setState({ accounts: this.state.accounts });
+	  },
+	
+	  addInterest: function addInterest(account) {
+	    console.log('attempting to add interest: ', account);
+	    account.amount *= 1.1;
+	    this.setState({ accounts: this.state.accounts });
+	    console.log(account);
+	  },
+	
 	  render: function render() {
 	    var bank = new Bank();
 	    var _iteratorNormalCompletion = true;
@@ -19914,8 +19928,8 @@
 	        bank.totalCash(),
 	        ' '
 	      ),
-	      React.createElement(AccountBox, { type: 'business', bank: bank }),
-	      React.createElement(AccountBox, { type: 'personal', bank: bank })
+	      React.createElement(AccountBox, { type: 'business', bank: bank, deleteAccount: this.deleteAccount, addInterest: this.addInterest }),
+	      React.createElement(AccountBox, { type: 'personal', bank: bank, deleteAccount: this.deleteAccount, addInterest: this.addInterest })
 	    );
 	  }
 	});
@@ -19924,9 +19938,11 @@
 
 /***/ },
 /* 163 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	var React = __webpack_require__(4);
 	
 	var Bank = function Bank() {
 	  this.accounts = [];
@@ -19935,11 +19951,6 @@
 	Bank.prototype = {
 	  addAccount: function addAccount(account) {
 	    this.accounts.push(account);
-	  },
-	
-	  deleteAccount: function deleteAccount(account) {
-	    var accountIndex = this.accounts.indexOf(account);
-	    this.accounts.splice(accountIndex, 1);
 	  },
 	
 	  findAccountByOwnerName: function findAccountByOwnerName(ownerName) {
@@ -19973,9 +19984,9 @@
 	
 	    return foundAccount;
 	  },
-	  filteredAccounts: function filteredAccounts(type) {
-	    if (!type) return this.accounts;
-	    var filteredAccounts = [];
+	
+	  findAccountById: function findAccountById(id) {
+	    var foundAccount = null;
 	    var _iteratorNormalCompletion2 = true;
 	    var _didIteratorError2 = false;
 	    var _iteratorError2 = undefined;
@@ -19984,7 +19995,9 @@
 	      for (var _iterator2 = this.accounts[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	        var account = _step2.value;
 	
-	        if (type === account.type) filteredAccounts.push(account);
+	        if (account.id = id) {
+	          foundAccount = account;
+	        }
 	      }
 	    } catch (err) {
 	      _didIteratorError2 = true;
@@ -20001,19 +20014,21 @@
 	      }
 	    }
 	
-	    return filteredAccounts;
+	    return foundAccount;
 	  },
-	  totalCash: function totalCash(type) {
-	    var total = 0;
+	
+	  filteredAccounts: function filteredAccounts(type) {
+	    if (!type) return this.accounts;
+	    var filteredAccounts = [];
 	    var _iteratorNormalCompletion3 = true;
 	    var _didIteratorError3 = false;
 	    var _iteratorError3 = undefined;
 	
 	    try {
-	      for (var _iterator3 = this.filteredAccounts(type)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	      for (var _iterator3 = this.accounts[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 	        var account = _step3.value;
 	
-	        total += account.amount;
+	        if (type === account.type) filteredAccounts.push(account);
 	      }
 	    } catch (err) {
 	      _didIteratorError3 = true;
@@ -20026,6 +20041,35 @@
 	      } finally {
 	        if (_didIteratorError3) {
 	          throw _iteratorError3;
+	        }
+	      }
+	    }
+	
+	    return filteredAccounts;
+	  },
+	  totalCash: function totalCash(type) {
+	    var total = 0;
+	    var _iteratorNormalCompletion4 = true;
+	    var _didIteratorError4 = false;
+	    var _iteratorError4 = undefined;
+	
+	    try {
+	      for (var _iterator4 = this.filteredAccounts(type)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	        var account = _step4.value;
+	
+	        total += account.amount;
+	      }
+	    } catch (err) {
+	      _didIteratorError4 = true;
+	      _iteratorError4 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	          _iterator4.return();
+	        }
+	      } finally {
+	        if (_didIteratorError4) {
+	          throw _iteratorError4;
 	        }
 	      }
 	    }
@@ -20066,10 +20110,10 @@
 	      React.createElement(
 	        'h4',
 	        null,
-	        'Account type total: ',
+	        'Account type total: £',
 	        this.props.bank.totalCash(this.props.type)
 	      ),
-	      React.createElement(AccountList, { bank: this.props.bank, type: this.props.type })
+	      React.createElement(AccountList, { bank: this.props.bank, type: this.props.type, deleteAccount: this.props.deleteAccount, addInterest: this.props.addInterest })
 	    );
 	  }
 	});
@@ -20086,22 +20130,31 @@
 	
 	var Bank = __webpack_require__(163);
 	
+	var AccountDeleter = __webpack_require__(166);
+	var InterestAdder = __webpack_require__(174);
+	
 	var AccountList = React.createClass({
 	  displayName: 'AccountList',
 	
 	
 	  render: function render() {
 	    var theseAccounts = this.props.bank.filteredAccounts(this.props.type);
-	
 	    var accountsList = theseAccounts.map(function (account, index) {
+	      var cheatKey = account.amount;
 	      return React.createElement(
-	        'li',
-	        { key: index },
-	        account.owner,
-	        ' holds £',
-	        account.amount
+	        'div',
+	        null,
+	        React.createElement(
+	          'li',
+	          { key: index },
+	          account.owner,
+	          ' holds £',
+	          account.amount
+	        ),
+	        React.createElement(AccountDeleter, { key: cheatKey, value: cheatKey, bank: this.props.bank, deleteAccount: this.props.deleteAccount, account: account }),
+	        React.createElement(InterestAdder, { bank: this.props.bank, account: account, addInterest: this.props.addInterest })
 	      );
-	    });
+	    }.bind(this));
 	    return React.createElement(
 	      'div',
 	      null,
@@ -20116,6 +20169,82 @@
 	});
 	
 	module.exports = AccountList;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var AccountDeleter = React.createClass({
+	  displayName: 'AccountDeleter',
+	
+	
+	  handleClick: function handleClick(e) {
+	    e.preventDefault;
+	    console.log('props', this.props);
+	    var account = this.props.account;
+	    this.props.bank.deleteAccount(account);
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleClick },
+	        'Delete?'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AccountDeleter;
+
+/***/ },
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var InterestAdder = React.createClass({
+	  displayName: 'InterestAdder',
+	
+	
+	  handleInterestClick: function handleInterestClick(e) {
+	    e.preventDefault;
+	    var account = this.props.account;
+	    this.props.addInterest(account);
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleInterestClick },
+	        'Apply interest?'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = InterestAdder;
 
 /***/ }
 /******/ ]);

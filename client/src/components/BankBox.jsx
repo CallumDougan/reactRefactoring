@@ -12,6 +12,20 @@ var BankBox = React.createClass({
     };
   },
 
+  deleteAccount: function(account){
+    console.log('attempting to delete:', account)
+    var accountIndex = this.state.accounts.indexOf(account);
+    this.state.accounts.splice(accountIndex, 1);
+    this.setState({accounts: this.state.accounts})
+  },
+
+  addInterest: function(account){
+    console.log('attempting to add interest: ', account);
+    account.amount *= 1.1;
+    this.setState({accounts: this.state.accounts})
+    console.log(account);
+  },
+
   render: function(){
     var bank = new Bank();
     for(var account of this.state.accounts){
@@ -22,8 +36,8 @@ var BankBox = React.createClass({
       <div>
       <h1>React Bank Box</h1>
       <h2>Total: £{ bank.totalCash() } </h2>
-      <AccountBox type='business' bank={ bank }/>
-      <AccountBox type='personal' bank={ bank }/>
+      <AccountBox type='business' bank={ bank } deleteAccount={ this.deleteAccount } addInterest = { this.addInterest }/>
+      <AccountBox type='personal' bank={ bank } deleteAccount={ this.deleteAccount } addInterest = { this.addInterest }/>
       </div>
       )
   }

@@ -8,8 +8,8 @@ var AccountBox = React.createClass({
     return(
       <div>
       <h3>Account Box: { this.props.type }</h3>
-      <h4>Account type total: { this.props.bank.totalCash(this.props.type) }</h4>
-      <AccountList bank={ this.props.bank } type = { this.props.type }/>
+      <h4>Account type total: £{ this.props.bank.totalCash(this.props.type) }</h4>
+      <AccountList bank={ this.props.bank } type={ this.props.type } deleteAccount={ this.props.deleteAccount } addInterest = { this.props.addInterest }/>
       </div>
       )
   }

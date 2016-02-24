@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Bank = function(){
   this.accounts = [];
 }
@@ -5,11 +7,6 @@ var Bank = function(){
 Bank.prototype = {
   addAccount: function(account){
     this.accounts.push(account);
-  },
-
-  deleteAccount: function(account){
-    var accountIndex = this.accounts.indexOf(account);
-    this.accounts.splice(accountIndex, 1);
   },
 
   findAccountByOwnerName:function(ownerName){
@@ -21,6 +18,17 @@ Bank.prototype = {
     }
     return foundAccount;
   },
+
+  findAccountById: function(id){
+    var foundAccount = null;
+    for(var account of this.accounts){
+      if(account.id = id){
+        foundAccount = account;
+      }
+    }
+    return foundAccount;
+  },
+
   filteredAccounts: function(type){
     if(!type) return this.accounts
     var filteredAccounts = [];
