@@ -19853,6 +19853,8 @@
 	
 	var Bank = __webpack_require__(163);
 	
+	var AccountBox = __webpack_require__(164);
+	
 	var BankBox = React.createClass({
 	  displayName: 'BankBox',
 	
@@ -19905,7 +19907,9 @@
 	        'Total: £',
 	        bank.totalCash(),
 	        ' '
-	      )
+	      ),
+	      React.createElement(AccountBox, { type: 'business', bank: bank }),
+	      React.createElement(AccountBox, { type: 'personal', bank: bank })
 	    );
 	  }
 	});
@@ -20022,6 +20026,84 @@
 	};
 	
 	module.exports = Bank;
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var AccountList = __webpack_require__(165);
+	
+	var AccountBox = React.createClass({
+	  displayName: 'AccountBox',
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h3',
+	        null,
+	        'Account Box: ',
+	        this.props.type
+	      ),
+	      React.createElement(
+	        'h4',
+	        null,
+	        'Account type total: ',
+	        this.props.bank.totalCash(this.props.type)
+	      ),
+	      React.createElement(AccountList, { bank: this.props.bank, type: this.props.type })
+	    );
+	  }
+	});
+	
+	module.exports = AccountBox;
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var Bank = __webpack_require__(163);
+	
+	var AccountList = React.createClass({
+	  displayName: 'AccountList',
+	
+	
+	  render: function render() {
+	    var theseAccounts = this.props.bank.filteredAccounts(this.props.type);
+	
+	    var accountsList = theseAccounts.map(function (account, index) {
+	      return React.createElement(
+	        'li',
+	        { key: index },
+	        account.owner,
+	        ' holds £',
+	        account.amount
+	      );
+	    });
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'ul',
+	        null,
+	        accountsList
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AccountList;
 
 /***/ }
 /******/ ]);
